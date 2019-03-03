@@ -1,0 +1,11 @@
+*.vcxproj
+*.filters
+.vs/
+cmake_install.cmake
+*.sln
+CMakeCache.txt
+CMakeFiles/
+lib/
+src/.vscode/
+src/GLUtils.dir/
+x64/
