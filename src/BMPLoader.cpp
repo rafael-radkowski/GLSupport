@@ -95,7 +95,7 @@ bool cs557::Exists (const std::string& name)
 #else
        // struct stat buffer;
        // return (stat (name.c_str(), &buffer) == 0);
-		int res = access(path_and_file.c_str(), R_OK);
+		int res = access(name.c_str(), R_OK);
 		if (res < 0) {
 			if (errno == ENOENT) {
 				// file does not exist

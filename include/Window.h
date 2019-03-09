@@ -24,7 +24,9 @@
 using namespace std;
 
 
-#define _WITH_CAMERA
+#ifndef _WITH_CAMERA
+	#define _WITH_CAMERA
+#endif
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 1024
 
