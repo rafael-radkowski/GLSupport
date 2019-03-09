@@ -29,8 +29,12 @@ All copyrights reserved.
 #include <GL/glew.h>
 
 // GLM include files
-#define GLM_FORCE_INLINE
-#define GLM_ENABLE_EXPERIMENTAL
+#ifndef GLM_FORCE_INLINE
+    #define GLM_FORCE_INLINE
+#endif
+#ifndef GLM_ENABLE_EXPERIMENTAL
+    #define GLM_ENABLE_EXPERIMENTAL
+#endif
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/transform.hpp>  // transformation
