@@ -17,14 +17,10 @@ TrackballControls::TrackballControls( int window_width, int window_height, GLflo
 {
     
     _mouseEvent = 0;
-    _mouseEvent2 = 0;
     _current_angle    = 0.0f;
     _camAxis    = glm::vec3(0.0f, 1.0f, 0.0f);
     
-    _vm = { 1,0,0,0,
-            0,1,0,0,
-            0,0,1,0,
-            0,0,0,1};
+    _vm = {1.f,0.f,0.f,0.f,0.f,1.f,0.f,0.f,0.f,0.f,1.f,0.f,0.f,0.f,0.f,1.f};
 
     _curOrient = glm::mat4();
 }
@@ -64,10 +60,8 @@ glm::vec3 TrackballControls::toScreenCoord( double x, double y ) {
  */
 void TrackballControls::mouseButtonCallback( GLFWwindow * window, int button, int action, int mods ){
     _mouseEvent = ( action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT );
-    if(_mouseEvent == 1) cout << "1 pressed " << endl;
 
-    _mouseEvent2 = ( action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_MIDDLE );
-    if(_mouseEvent2 == 1) cout << "pressed " << endl;
+
 }
 
 
@@ -93,6 +87,7 @@ void TrackballControls::cursorCallback( GLFWwindow *window, double x, double y )
         
         /* Cross product to get the rotation axis, but it's still in camera coordinate */
         _camAxis  = glm::cross( _prevPos, _currPos );
+
 
         _vm = glm::rotate( _vm, glm::degrees(_current_angle) * _rollingSpeed, _camAxis );
 

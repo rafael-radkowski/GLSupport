@@ -3,8 +3,6 @@
 // stl include
 #include <iostream>
 #include <string>
-#include <vector>
-#include <functional>
 
 // GLEW include
 #include <GL/glew.h>
@@ -26,7 +24,7 @@
 using namespace std;
 
 
-#define _WITH_CAMERA
+
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 1024
 
@@ -41,14 +39,6 @@ namespace cs557
 	@return - a pointer storing a handle to the window
 	*/
 	GLFWwindow* initWindow(string window_name = "OpenGL Window for 557");
-
-
-	/*!
-	This function initializes the GLFW window
-	@param window_width, window_height - the width and height of the window in pixel
-	@return - a pointer storing a handle to the window
-	*/
-	GLFWwindow* initWindow(int window_width, int window_height, string window_name = "OpenGL Window for 557");
 
 
 	/*
@@ -69,13 +59,5 @@ namespace cs557
 	@param vm - 4x4 view matrix. 
 	*/
 	void InitControlsViewMatrix(glm::mat4 vm);
-
-
-	/*
-	Add a keyboard callback function of type
-	void name(int key, int action).
-	The keyboard function will call it. 
-	*/
-	void AddKeyboardCallbackPtr(std::function<void(int, int)> fc);
 
 }

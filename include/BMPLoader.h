@@ -1,3 +1,13 @@
+/*
+
+
+---------------------------------------------------------
+Last edits:
+
+Oct 21, 2019, RR
+- Added FilesystemCheck.h and removed experimental/filesystem
+- Added code for filesystem::exists() for the experimental version and the new version. 
+*/
 #pragma once
 
 
@@ -7,13 +17,9 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <vector>
-#ifdef _WIN32
-#include <conio.h>
-#include  <experimental/filesystem>
-#else
-#include <unistd.h>
-#endif
+#include <vector> 
+
+#include "FilesystemCheck.h"
 
 // GLEW include
 #include <GL/glew.h>
@@ -26,6 +32,9 @@
 
 // glfw includes
 #include <GLFW/glfw3.h>
+
+// local
+#include "FileUtils.h"
 
 
 using namespace std;

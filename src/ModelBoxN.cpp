@@ -66,41 +66,41 @@ void cs557::BoxN::create(float width, float height, float length, unsigned int s
 	float vertices[] = { 
 		//--------------------------------------------------------
 		// xy-plane, positive z direction
-		-_width / 2.0 + center_x, -_height / 2.0 + center_y, _length / 2.0 + center_z,
-		-_width / 2.0 + center_x, _height / 2.0 + center_y, _length / 2.0 + center_z,
-		_width / 2.0 + center_x, -_height / 2.0 + center_y,  _length / 2.0 + center_z,
-		_width / 2.0 + center_x, _height / 2.0 + center_y, _length / 2.0 + center_z,
+		-_width / 2.0f + center_x, -_height / 2.0f + center_y, _length / 2.0f + center_z,
+		-_width / 2.0f + center_x, _height / 2.0f + center_y, _length / 2.0f + center_z,
+		_width / 2.0f + center_x, -_height / 2.0f + center_y,  _length / 2.0f + center_z,
+		_width / 2.0f + center_x, _height / 2.0f + center_y, _length / 2.0f + center_z,
 		//--------------------------------------------------------
 		// xy-plane, negative z direction
-		_width / 2.0 + center_x, -_height / 2.0 + center_y, -_length / 2.0 + center_z,
-		_width / 2.0 + center_x, _height / 2.0 + center_y,  -_length / 2.0 + center_z,
-		-_width / 2.0 + center_x, -_height / 2.0 + center_y,  -_length / 2.0 + center_z,
-		-_width / 2.0 + center_x, _height / 2.0 + center_y, -_length / 2.0 + center_z,
+		_width / 2.0f + center_x, -_height / 2.0f + center_y, -_length / 2.0f + center_z,
+		_width / 2.0f + center_x, _height / 2.0f + center_y,  -_length / 2.0f + center_z,
+		-_width / 2.0f + center_x, -_height / 2.0f + center_y,  -_length / 2.0f + center_z,
+		-_width / 2.0f + center_x, _height / 2.0f + center_y, -_length / 2.0f + center_z,
 		//--------------------------------------------------------
 		// yz-plane, positive x direction
-		_width / 2.0 + center_x, -_height / 2.0 + center_y,  _length / 2.0 + center_z,
-		_width / 2.0 + center_x, _height / 2.0 + center_y, _length / 2.0 + center_z,
-		_width / 2.0 + center_x, -_height / 2.0 + center_y, -_length / 2.0 + center_z,
-		_width / 2.0 + center_x,  _height / 2.0 + center_y, -_length / 2.0 + center_z,
+		_width / 2.f + center_x, -_height / 2.0f + center_y,  _length / 2.0f + center_z,
+		_width / 2.0f + center_x, _height / 2.0f + center_y, _length / 2.0f + center_z,
+		_width / 2.0f + center_x, -_height / 2.0f + center_y, -_length / 2.0f + center_z,
+		_width / 2.0f + center_x,  _height / 2.0f + center_y, -_length / 2.0f + center_z,
 		//--------------------------------------------------------
 		// yz-plane, negative x direction
-		-_width / 2.0 + center_x, -_height / 2.0 + center_y,  _length / 2.0 + center_z,
-		-_width / 2.0 + center_x, _height / 2.0 + center_y, _length / 2.0 + center_z,
-		-_width / 2.0 + center_x, -_height / 2.0 + center_y, -_length / 2.0 + center_z,
-		-_width / 2.0 + center_x,  _height / 2.0 + center_y, -_length / 2.0 + center_z,
+		-_width / 2.0f + center_x, -_height / 2.0f + center_y,  _length / 2.0f + center_z,
+		-_width / 2.0f + center_x, _height / 2.0f + center_y, _length / 2.0f + center_z,
+		-_width / 2.0f + center_x, -_height / 2.0f + center_y, -_length / 2.0f + center_z,
+		-_width / 2.0f + center_x,  _height / 2.0f + center_y, -_length / 2.0f + center_z,
 		//--------------------------------------------------------
 		// xz-plane, positive y direction
-		_width / 2.0 + center_x, _height / 2.0 + center_y,  _length / 2.0 + center_z,
-		_width / 2.0 + center_x, _height / 2.0 + center_y, -_length / 2.0 + center_z,
-		-_width / 2.0 + center_x, _height / 2.0 + center_y, _length / 2.0 + center_z,
-		-_width / 2.0 + center_x, _height / 2.0 + center_y, -_length / 2.0 + center_z,
+		_width / 2.0f + center_x, _height / 2.0f + center_y,  _length / 2.0f + center_z,
+		_width / 2.0f + center_x, _height / 2.0f + center_y, -_length / 2.0f + center_z,
+		-_width / 2.0f + center_x, _height / 2.0f + center_y, _length / 2.0f + center_z,
+		-_width / 2.0f + center_x, _height / 2.0f + center_y, -_length / 2.0f + center_z,
 		
 		//--------------------------------------------------------
 		// xz-plane, negative y direction
-		_width / 2.0 + center_x, -_height / 2.0 + center_y,  _length / 2.0 + center_z,
-		_width / 2.0 + center_x, -_height / 2.0 + center_y, -_length / 2.0 + center_z,
-		-_width / 2.0 + center_x, -_height / 2.0 + center_y, _length / 2.0 + center_z,
-		-_width / 2.0 + center_x, -_height / 2.0 + center_y, -_length / 2.0 + center_z,
+		_width / 2.0f + center_x, -_height / 2.0f + center_y,  _length / 2.0f + center_z,
+		_width / 2.0f + center_x, -_height / 2.0f + center_y, -_length / 2.0f + center_z,
+		-_width / 2.0f + center_x, -_height / 2.0f + center_y, _length / 2.0f + center_z,
+		-_width / 2.0f + center_x, -_height / 2.0f + center_y, -_length / 2.0f + center_z,
 		
 	};
 
@@ -135,12 +135,6 @@ void cs557::BoxN::create(float width, float height, float length, unsigned int s
 	};
 
 
-
-
-	// create a vertex buffer object
-	CreateVertexObjects33(vaoID, vboID, vertices, normals, 24);
-
-
 	// create a shader program only if the progrm was not overwritten. 
 	if(program == -1)
 		program = cs557::CreateShaderProgram(vs_string_box_410, fs_string_box_410);
@@ -154,6 +148,9 @@ void cs557::BoxN::create(float width, float height, float length, unsigned int s
 	int pos_location = glGetAttribLocation(program, "in_Position");
 	int normal_location = glGetAttribLocation(program, "in_Normal");
 
+	
+	// create a vertex buffer object
+	CreateVertexObjects33(vaoID, vboID, vertices, normals, 24, pos_location, normal_location);
 
 	glBindAttribLocation(program, pos_location, "in_Position");
 	glBindAttribLocation(program, normal_location, "in_Normal");

@@ -106,7 +106,7 @@ typedef struct Material
     Note that the shader program must use the correct variable names.
     @param program_id - the shader program id as integer
     */
-    inline void apply(int program_id )
+    inline void setAllUniform(int program_id )
     {
 
         glUseProgram(program_id );
@@ -240,13 +240,8 @@ typedef struct _LightSource
     Note that the shader program must use the correct variable names.
     @param program_id - the shader program id as integer
     */
-    inline void apply(int shader_program_id)
+    inline void setAllUniform(int shader_program_id)
     {
-		if (index == -1){
-			std::cout  << " [ERROR] - LightSource index is set to" << index << "  - Set the index!! " << endl;
-		}
-
-
         glUseProgram(shader_program_id );
         if(checkName(shader_program_id, getVariableName("light", index, "position") )) glUniform3fv(glGetUniformLocation(shader_program_id , getVariableName("light", index, "position").c_str()), 1, &pos[0]);
         if(checkName(shader_program_id, getVariableName("light", index, "direction") )) glUniform3fv(glGetUniformLocation(shader_program_id , getVariableName("light", index, "direction").c_str()), 1, &dir[0]);
@@ -269,10 +264,9 @@ typedef struct _LightSource
     {
 
         int ret = glGetUniformLocation(shader_program_id, variable_name.c_str());
-        if(ret == -1 && error_count < 10){
-            std::cout << ret << " [ERROR] - LightSource " << index << "  - Cannot find shader program variable " << variable_name << " (program: "<< shader_program_id << ").\nDid you add the right variable name?" << std::endl; 
-			error_count++;
-			return false;
+        if(ret == -1){
+           // std::cout << ret << " [ERROR] - LightSource " << index << "  - Cannot find shader program variable " << variable_name << " (program: "<< shader_program_id << ").\nDid you add the right variable name?" << std::endl; 
+            return false;
         }
         return true;
     }

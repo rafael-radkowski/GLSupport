@@ -29,7 +29,8 @@ bool cs557::LoadBMPFromFile(const string path_and_file, int* width, int* height,
     }
 
     // Check whether the file exits
-	bool ret = Exists(path_and_file);
+	string local_path_and_file = path_and_file;
+	bool ret =  FileUtils::Search(path_and_file, local_path_and_file);
     
 	if(!ret)
 	{
@@ -47,7 +48,7 @@ bool cs557::LoadBMPFromFile(const string path_and_file, int* width, int* height,
     
     // This opens a file
     FILE * file;
-    file = fopen( path_and_file.c_str(), "rb" );
+    file = fopen( local_path_and_file.c_str(), "rb" );
     
     if ( file == NULL ) return 0;
     
@@ -86,30 +87,19 @@ bool cs557::LoadBMPFromFile(const string path_and_file, int* width, int* height,
  */
 bool cs557::Exists (const std::string& name)
 {
-#ifdef _WIN32
-    if (std::experimental::filesystem::exists(name)) {
+   #ifdef _WIN32
+ #if defined(_MSC_VER) && (_MSC_VER >= 1916)	 
+    if (std::filesystem::exists(name)) {
+#else
+	if (std::experimental::filesystem::exists(name)) {
+#endif
         return true;
     } else {
 		return false;
     }
-#else
-       // struct stat buffer;
-       // return (stat (name.c_str(), &buffer) == 0);
-		int res = access(path_and_file.c_str(), R_OK);
-		if (res < 0) {
-			if (errno == ENOENT) {
-				// file does not exist
-				return false;
-			}
-			else if (errno == EACCES) {
-				// file exists but is not readable
-				return false;
-			}
-			else {
-				return false;
-			}
-		}
-	return true;    
-#endif
+    #else
+        struct stat buffer;
+        return (stat (name.c_str(), &buffer) == 0);
+    #endif
 }
 

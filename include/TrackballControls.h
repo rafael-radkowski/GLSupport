@@ -18,7 +18,10 @@
 
 #include "ControlsBase.h"
 
+using namespace glm;
 using namespace std;
+
+
 
 namespace cs557
 {
@@ -64,7 +67,6 @@ namespace cs557
 		int     _windowWidth;
 		int     _windowHeight;
 		int     _mouseEvent;
-		int		_mouseEvent2;
 
 		GLfloat _rollingSpeed;
 		GLfloat _current_angle;

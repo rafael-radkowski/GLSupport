@@ -138,7 +138,7 @@ GLuint cs557::CreateShaderProgram(string vertex_source, string fragment_source)
     bool link_status = ShaderProgramUtils::CheckLinker( program);
     if(!link_status)
     {
-        cout << "Problems linking the shader program" << endl;
+        cout << "Problems link the shader program" << endl;
         program = -1;
         return program;
     }
@@ -176,7 +176,11 @@ GLuint cs557::LoadAndCreateShaderProgram(string vertex_file, string fragment_fil
 bool cs557::ShaderProgramUtils::Exists (const std::string& name)
 {
    #ifdef _WIN32
-    if (std::experimental::filesystem::exists(name)) {
+   #if  defined(_MSC_VER) && (_MSC_VER >= 1916)	
+    if (std::filesystem::exists(name)) {
+	#else
+	if (std::experimental::filesystem::exists(name)) {
+	#endif
         return true;
     } else {
 		return false;
@@ -196,14 +200,12 @@ bool cs557::ShaderProgramUtils::Exists (const std::string& name)
  */
 string cs557::ShaderProgramUtils::LoadFromFile(string path_and_file)
 {
-	if(!Exists(path_and_file)) {
-		
-		cout << "[ERROR] Cannot find shader program " << path_and_file << "." <<endl;
-		return "";
-	}
+	// Check if the file exits. 
+	string local_path_and_file;
+	bool ret = cs557::FileUtils::Search( path_and_file, local_path_and_file);
     
-    
-    ifstream in(path_and_file);
+    // Load the code
+    ifstream in(local_path_and_file);
     
     if(in.is_open())
     {
@@ -366,5 +368,4 @@ GLuint cs557::LoadAndCreateShaderProgram(string vertex_file, string geometry_fil
 
     // create and return the pgoram.
     return CreateShaderProgram(vertex_source, geometry_source, fragment_source);
-
 }

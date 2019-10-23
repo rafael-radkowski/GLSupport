@@ -6,18 +6,13 @@
 namespace cs557
 {
 
-	/*
-	Vector for keyboard callbacks
-	*/
-	std::vector< std::function<void(int, int)> > key_callbacks;
-
 
 	// A trackball to move and rotate the camera view 
 	// Note that WINDOW_WIDTH and  WINDOW_HEIGHT is defined in Window.h
 #ifdef _WITH_CAMERA
 	static cs557::CameraControls camera(WINDOW_WIDTH, WINDOW_HEIGHT);
 #else
-	static cs557::TrackballControls trackball(WINDOW_WIDTH, WINDOW_HEIGHT, 0.1f, true, true);
+	static cs557::TrackballControls trackball(WINDOW_WIDTH, WINDOW_HEIGHT, 0.4f, true, true);
 #endif
 
 
@@ -64,12 +59,8 @@ namespace cs557
 			glfwSetWindowShouldClose(window, GL_TRUE);
 		}
 
-		for (auto cb : key_callbacks) {
-			cb(key, action);
-		}
 	}
 
-	
 
 
 
@@ -77,16 +68,7 @@ namespace cs557
 	/*
 	This function initializes the GLFW window
 	*/
-	GLFWwindow* initWindow(string window_name) {
-		return initWindow(WINDOW_WIDTH, WINDOW_HEIGHT, window_name);
-	}
-
-	/*!
-	This function initializes the GLFW window
-	@param window_width, window_height - the width and height of the window in pixel
-	@return - a pointer storing a handle to the window
-	*/
-	GLFWwindow* initWindow(int window_width, int window_height, string window_name)
+	GLFWwindow* initWindow(string window_name)
 	{
 		// The handle to the window object
 		GLFWwindow*         window = NULL;
@@ -111,7 +93,7 @@ namespace cs557
 
 
 		// Create a window to put our stuff in.
-		window = glfwCreateWindow(window_width, window_height, window_name.c_str() , NULL, NULL);
+		window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, window_name.c_str() , NULL, NULL);
 
 		// If the window fails to be created, print out the error, clean up GLFW and exit the program.
 		if (window == NULL) {
@@ -175,16 +157,6 @@ namespace cs557
 #endif
 	}
 
-
-	/*
-	Add a keyboard callback function of type
-	void name(int key, int action).
-	The keyboard function will call it. 
-	*/
-	void AddKeyboardCallbackPtr(std::function<void(int, int)> fc)
-	{
-		key_callbacks.push_back(fc);
-	}
 
 
 

@@ -19,13 +19,11 @@ Last edit:
 Dec 16, 2018, RR
 	- fixed a bug that skipped severa triangles from being rendeered.
 	- changed the code to process all data. 
-Feb 19, 2019, RR
-	- added material: The obj material from a mat file was not used correctly. 
-		Added a feature to process it per mesh. 
-March 2, 2019, RR
-	- added a new draw function that only takes the proj matrix and the view matrix
-	- added the  model matrxi as a class member
-	- added a function to set the model matrix
+
+Oct 20, 2019, RR
+	- Removed some legacy code. 
+	- Test whether points have been loaded before rendering. 
+	- Added the class FileUtils to the code to check whether the model is at its indicated location. 
 */
 #pragma once
 
@@ -48,7 +46,7 @@ March 2, 2019, RR
 // local
 #include "VertexBuffers.h"			// create vertex buffer object
 #include "ShaderProgram.h"			// create a shader program
-#include "CommonTypes.h"  
+#include "FileUtils.h"				// checks whether the model file is at its given location.
 
 
 using namespace std;
@@ -74,19 +72,13 @@ namespace cs557
 		@param modelMatrix - a model matrix object.
 		*/
 		void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm::mat4 modelMatrix);
-		void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
+
 
 		/*
 		Return the shader program
 		@return - int containing the shader program
 		*/
 		int getProgram(void){return program;}
-
-		/*
-		Set the object's model matrix
-		@param m - 4x4 model matrix
-		*/
-		void setModelMatrix(glm::mat4 m) {modelMatrix = m; }
 
 	private:
 
@@ -101,13 +93,6 @@ namespace cs557
 		int modelMatrixLocation;
 		int projMatrixLocation;
 
-		glm::mat4						modelMatrix;
-
-		// indices to render
-		std::vector<int>					start_index;
-		std::vector<int>					length;
-
-		std::vector<cs557::Material>		materials;//material per mesh
 	
 		int _N; // number of vertices
 		int _I; // number indices
