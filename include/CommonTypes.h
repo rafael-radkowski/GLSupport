@@ -106,7 +106,7 @@ typedef struct Material
     Note that the shader program must use the correct variable names.
     @param program_id - the shader program id as integer
     */
-    inline void setAllUniform(int program_id )
+    inline void apply(int program_id )
     {
 
         glUseProgram(program_id );
@@ -240,7 +240,7 @@ typedef struct _LightSource
     Note that the shader program must use the correct variable names.
     @param program_id - the shader program id as integer
     */
-    inline void setAllUniform(int shader_program_id)
+    inline void apply(int shader_program_id)
     {
         glUseProgram(shader_program_id );
         if(checkName(shader_program_id, getVariableName("light", index, "position") )) glUniform3fv(glGetUniformLocation(shader_program_id , getVariableName("light", index, "position").c_str()), 1, &pos[0]);

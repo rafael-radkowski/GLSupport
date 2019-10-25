@@ -11,6 +11,7 @@ src/GLUtils.dir/
 x64/
 test/gl_test_light/GL_Test_Lights.dir/
 test/gl_test_light/GLTest_01.dir/
+test/gl_test_light/GLTest01.dir/
 *.user
 *.pdb
 bin/

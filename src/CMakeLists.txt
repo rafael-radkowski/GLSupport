@@ -6,7 +6,17 @@ cmake_minimum_required(VERSION 2.6)
 cmake_policy(SET CMP0015 NEW)
 cmake_policy(SET CMP0074 NEW)
 
-set( OutputDir ../lib)
+set( OutputDir ${CMAKE_SOURCE_DIR}/lib)
+
+
+
+
+# Find packages
+FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(GLEW REQUIRED)
+FIND_PACKAGE(GLM REQUIRED)
+FIND_PACKAGE(GLFW3 REQUIRED)
+
 
 file(GLOB GLUtils_SRC
     "*.cpp"
@@ -37,8 +47,10 @@ set(CMAKE_DEBUG_POSTFIX d)
 # Create an executable
 add_library(${PROJECT_NAME}  ${GLUtils_SRC} ${GLUtils_INC} )
 
+
+
 # Add libraries
-target_link_libraries(${PROJECT_NAME}   ${GLEW_LIBRARIES} ${GLEW_LIBRARY} ${GLFW3_LIBRARY} ${OPENGL_LIBRARIES}   )
+target_link_libraries(${PROJECT_NAME}   ${GLEW_LIBS} ${GLEW_LIBS} ${GLFW3_LIBS} ${OPENGL_LIBRARIES}   )
 
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${OutputDir} )

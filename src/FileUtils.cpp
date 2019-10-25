@@ -1,6 +1,5 @@
 #include "FileUtils.h"
 
-
 using namespace cs557;
 
 #ifdef _WIN32

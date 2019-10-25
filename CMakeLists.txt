@@ -3,13 +3,14 @@ cmake_minimum_required(VERSION 2.6)
 
 # policy for relative subfolders
 cmake_policy(SET CMP0015 NEW)
-
+cmake_policy(SET CMP0074 NEW)
+cmake_policy(SET CMP0010 NEW)
 
 # Main project name
 project(GLUtils)
 
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(OUTPUT_BINDIR ${CMAKE_SOURCE_DIR}/bin)
 make_directory(${OUTPUT_BINDIR})
 
@@ -41,12 +42,6 @@ FIND_PACKAGE(glm REQUIRED)
 FIND_PACKAGE(GLFW3 REQUIRED)
 
 
-if (GLEW_FOUND)
-message(STATUS "Found GLEW ${GLEW_INCLUDE_DIR} and ${GLEW_LIBRARIES}")
-else(GLEW_FOUND)
-message(FATAL_ERROR  "Did not find GLEW")
-endif(GLEW_FOUND)
-
 
 if (GLFW_FOUND)
 message(STATUS "Found GLEW ${GLFW_INCLUDE_DIRS} and ${GLFW3_LIBRARY}")
@@ -61,7 +56,6 @@ endif()
 
 
 
-
 # Include dirs
 include_directories(${OPENGL_INCLUDE_DIR})
 include_directories(${GLEW_INCLUDE_DIR})
@@ -69,7 +63,6 @@ include_directories(${GLFW3_INCLUDE_DIR})
 include_directories(${GLM_INCLUDE_DIR})
 include_directories(./src)
 include_directories(./include)
-
 
 
 add_compile_definitions(_WITH_CAMERA)

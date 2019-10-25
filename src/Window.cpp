@@ -6,13 +6,24 @@
 namespace cs557
 {
 
+	
+	int WINDOW_WIDTH = 1280;
+	int WINDOW_HEIGHT = 1024;
+
+
+
+	/*
+	Vector for keyboard callbacks
+	*/
+	std::vector< std::function<void(int, int)> > key_callbacks;
+
 
 	// A trackball to move and rotate the camera view 
 	// Note that WINDOW_WIDTH and  WINDOW_HEIGHT is defined in Window.h
 #ifdef _WITH_CAMERA
 	static cs557::CameraControls camera(WINDOW_WIDTH, WINDOW_HEIGHT);
 #else
-	static cs557::TrackballControls trackball(WINDOW_WIDTH, WINDOW_HEIGHT, 0.4f, true, true);
+	static cs557::TrackballControls trackball(WINDOW_WIDTH, WINDOW_HEIGHT, 0.1f, true, true);
 #endif
 
 
@@ -57,6 +68,10 @@ namespace cs557
 		if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		{
 			glfwSetWindowShouldClose(window, GL_TRUE);
+		}
+
+		for (auto cb : key_callbacks) {
+			cb(key, action);
 		}
 
 	}
@@ -122,6 +137,15 @@ namespace cs557
 
 
 
+	GLFWwindow* initWindow(int wnd_height, int wnd_width, string window_name)
+	{
+		WINDOW_WIDTH = wnd_width;
+		WINDOW_HEIGHT = wnd_height;
+
+		return initWindow(window_name);
+	}
+
+
 
 	/*
 	Return a reference of the trackball.
@@ -157,6 +181,16 @@ namespace cs557
 #endif
 	}
 
+
+		/*
+	Add a keyboard callback function of type
+	void name(int key, int action).
+	The keyboard function will call it. 
+	*/
+	void AddKeyboardCallbackPtr(std::function<void(int, int)> fc)
+	{
+		key_callbacks.push_back(fc);
+	}
 
 
 

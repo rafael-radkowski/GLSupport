@@ -27,7 +27,7 @@ cmake_policy(SET CMP0074 NEW)
 
 
 # Main project name
-project(GLTest_01)
+project(GLTest01)
 
 
 set(CFILE_PATH  "${CMAKE_SOURCE_DIR}/../../SDK/cmake/")
@@ -110,6 +110,6 @@ add_executable(${PROJECT_NAME} ${Test_SRC} )
 
 
 # Add libraries
-target_link_libraries(${PROJECT_NAME}  ${GLEW_LIBRARIES} ${GLEW_LIBRARY} ${GLFW3_LIBRARY} ${OPENGL_LIBRARIES} ${OPENGL_LIBRARIES}  )
+target_link_libraries(${PROJECT_NAME}  ${GLEW_LIBS} ${GLEW_LIBS} ${GLFW3_LIBS} ${OPENGL_LIBS} ${OPENGL_LIBRARIES}  )
 target_link_libraries(${PROJECT_NAME} debug  GLUtilsd.lib )
 target_link_libraries(${PROJECT_NAME} optimized  GLUtils.lib )

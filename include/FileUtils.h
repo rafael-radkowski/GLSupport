@@ -32,7 +32,6 @@ Oct 22, 2019, RR
 
 // local
 #include "FilesystemCheck.h"
-#include "FileUtils.h"
 
 using namespace std;
 

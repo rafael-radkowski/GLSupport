@@ -178,9 +178,9 @@ void my_key_callback(GLFWwindow* window, int key, int scancode, int action, int 
 
     // Update the position of the light. 
     light0.pos =  glm::vec3(kx, ky, kz);
-    light0.setAllUniform(teapot0.getProgram());
-    light0.setAllUniform(plane0.getProgram());
-    light0.setAllUniform(sphere.getProgram());
+    light0.apply(teapot0.getProgram());
+    light0.apply(plane0.getProgram());
+    light0.apply(sphere.getProgram());
 }
 
 
@@ -224,8 +224,8 @@ void CreateLights(void)
     spheremat.specular_s = 6.0;
 
     // This function passes all uniform varibles to the program
-    spheremat.setAllUniform(sphere.getProgram());
-    light0.setAllUniform(sphere.getProgram());
+    spheremat.apply(sphere.getProgram());
+    light0.apply(sphere.getProgram());
 
     glUseProgram(0);
 
@@ -281,10 +281,10 @@ void CreateTeapotModel(void)
 
     // Add light and material to the program. 
     // The function passes all uniform varibles to the program
-    teapot0mat.setAllUniform(teapot0.getProgram());
-    light0.setAllUniform(teapot0.getProgram());
-    light1.setAllUniform(teapot0.getProgram());
-    light2.setAllUniform(teapot0.getProgram());
+    teapot0mat.apply(teapot0.getProgram());
+    light0.apply(teapot0.getProgram());
+    light1.apply(teapot0.getProgram());
+    light2.apply(teapot0.getProgram());
 
 	glUseProgram(0);
 
@@ -316,10 +316,10 @@ void CreatePlane(void)
 
     // Add light and material to the program. 
     // The function passes all uniform varibles to the program
-    plane0mat.setAllUniform(plane0.getProgram());
-    light0.setAllUniform(plane0.getProgram());
-    light1.setAllUniform(plane0.getProgram());
-    light2.setAllUniform(plane0.getProgram());
+    plane0mat.apply(plane0.getProgram());
+    light0.apply(plane0.getProgram());
+    light1.apply(plane0.getProgram());
+    light2.apply(plane0.getProgram());
 
 	glUseProgram(0);
 
@@ -366,7 +366,7 @@ void Init(void)
 {
 
     // Init the GLFW Window
-    window = cs557::initWindow();
+    window = cs557::initWindow("TrackingExpert+ GLSupport Test App");
 
     // set a keyboard callback
     glfwSetKeyCallback(window, my_key_callback);
