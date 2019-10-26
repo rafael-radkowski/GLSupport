@@ -1,3 +1,23 @@
+/*
+Trackback control for a gl scene
+
+Rafael Radkowski
+Iowa State University
+rafael@iastate.edu
+
+Jan 15, 2016
+MIT License
+--------------------------------------------------------------
+Last edited:
+
+Oct 26, 2019, RR
+- Updated the control features. One can now change the distance to the object using the left mouse button. 
+- Bug fix: fixed a bug that prevented the trackball from rotating correctly. 
+
+
+*/
+
+
 #include "CameraControls.h"
 
 
@@ -17,16 +37,19 @@ CameraControls::CameraControls(int window_width, int window_height):
     _xAxis = true;
     _yAxis = true;
 
-    _position = glm::vec3(0.0,0.0,-6.0);
+    _center = glm::vec3(0.0,0.0,0.0);
+	_eye = glm::vec3(0.0,0.0,-6.0);
     _horizontalAngle = 3.14f;
     _verticalAngle = 0.0f;
     _locomotion_speed = 0.2f; 
     _rolling_speed = 0.5f;
     _mouse_event = 0;
+	_mouse_move_event = 0.0;
     _current_angle = 0;
+	_mouse_middle_event = 0;
 
     // an initial matrix to start with. 
-    _vm = glm::lookAt(_position, glm::vec3(0.0,0.0,0.0), glm::vec3(0.0,1.0,0.0) );
+    _vm = glm::lookAt(_eye, _center, glm::vec3(0.0,1.0,0.0) );
 
 }
 
@@ -37,7 +60,7 @@ Set an initial view matrix to define the start point.
 void CameraControls::initView(glm::mat4 vm)
 {
     _vm = vm;
-    _position = _position = glm::vec3(-_vm[3][0],-_vm[3][1],-_vm[3][2]);
+    _eye = glm::vec3(-_vm[3][0],-_vm[3][1],-_vm[3][2]);
 }
 
 
@@ -63,20 +86,23 @@ glm::vec3 CameraControls::toScreenCoord( double x, double y )
 {
     glm::vec3 coord(0.0f);
     
+	float wx = 0.0;
+	float wy = 0.0;
     if( _xAxis )
-        coord.x =  -(2 * x - _windowWidth ) / _windowWidth;
+		wx =  -(2 * x - _windowWidth ) / _windowWidth;
     
     if( _yAxis )
-        coord.y = -(2 * y - _windowHeight) / _windowHeight;
+        wy = -(2 * y - _windowHeight) / _windowHeight;
     
     /* Clamp it to border of the windows */
-    coord.x = glm::clamp( coord.x, -1.0f, 1.0f );
-    coord.z = glm::clamp( coord.y, -1.0f, 1.0f );
+	//coord.x = coord.z;
+    coord.x = glm::clamp( -wx, -1.0f, 1.0f );
+    coord.y = glm::clamp( wy, -1.0f, 1.0f );
+   
     
-    
-    float length_squared = coord.x * coord.x + coord.z * coord.z;
+    float length_squared = coord.y * coord.y + coord.x * coord.x;
     if( length_squared <= 1.0 )
-        coord.y = sqrt( 1.0 - length_squared );
+       coord.z = sqrt( 1.0 - length_squared );
     else
         coord = glm::normalize( coord );
     
@@ -105,11 +131,59 @@ void CameraControls::cursorCallback( GLFWwindow *window, double x, double y )
         _camAxis  = glm::cross( _previous_sc, _current_sc );
 		
 		// Check if the angle is larger than 0.001. The matrix becomes undefined otherwise. 
-		if(std::abs(_current_angle) > 0.001)
-			_vm = glm::rotate(_vm, glm::degrees(_current_angle) * _rolling_speed, _camAxis );
+		if(std::abs(_current_angle) > 0.001){
+			_eye = _vm[3];
+			_vm[3] = glm::vec4(0.0,0.0,0.0, 1.0);
+			_vm = glm::translate(_eye) * (glm::rotate(glm::mat4(1.0), glm::degrees(_current_angle) * _rolling_speed, _camAxis ) * _vm) ;
+		}
 
         _previous_sc = _current_sc;
     }
+
+	if (_mouse_move_event == 1) {
+		
+		_prev_screen = y;
+		_mouse_move_event = 2;
+
+	}else if (_mouse_move_event == 2) {
+		
+		 float distance = y - _prev_screen;
+		 float sign = glm::sign( y - _prev_screen );
+
+		 if(std::abs(distance) > 0.001){
+			_eye = _vm[3] + (glm::vec4(_eye, 0.0f) - glm::vec4(_center, 0.0f)) * sign * 0.01f;
+			_vm[3] = glm::vec4(0.0,0.0,0.0, 1.0);
+			_vm = glm::translate(_eye)  * _vm;
+		}
+		 _prev_screen = y;
+	}
+
+
+	if (_mouse_middle_event == 1) {
+		
+		_previous_sc = toScreenCoord( y,x ); 
+		_prev_screen = y;
+		_mouse_middle_event = 2;
+
+	}
+	else if (_mouse_middle_event == 2) {
+		
+		float sign = glm::sign( x - _prev_screen );
+		_current_sc= toScreenCoord( y,x ); 
+		_camAxis  = glm::normalize( glm::cross( _previous_sc, _current_sc ) );
+		glm::vec3 cam = glm::cross(_eye- _center, _camAxis );
+
+		_eye = _vm[3] + glm::vec4(_camAxis, 0.0f) * sign * 0.01f;
+		_center = _center +  glm::vec3(_camAxis) * sign * 0.01f;
+
+		_vm[3] = glm::vec4(0.0,0.0,0.0, 1.0);
+		_vm = (glm::translate(_eye)  * _vm ) * glm::translate(_center);
+	
+		  _prev_screen = y;
+		_previous_sc = _current_sc;
+	}
+
+	
     
 }
 
@@ -118,9 +192,11 @@ Mouse button callback function
 */
 void CameraControls::mouseButtonCallback( GLFWwindow * window, int button, int action, int mods )
 {
+	
     //  mouse event
      _mouse_event = ( action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_LEFT );
-
+	 _mouse_move_event = ( action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_RIGHT );
+	 _mouse_middle_event = ( action == GLFW_PRESS && button == GLFW_MOUSE_BUTTON_MIDDLE );
 }
 
 

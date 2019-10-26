@@ -20,6 +20,12 @@ November 2018
 rafael@iastate.edu
 
 MIT License
+
+------------------------------------------------------------------------------
+Last edited:
+
+Oct 26, 2019, RR
+- Moved the camera center point transformation to the camera control class. 
 */
 
 
@@ -404,7 +410,7 @@ void Draw(void)
 
         // update the camera values.
         // Note that this line changes the view matrix.
-        glm::mat4 rotated_view =    cs557::GetCamera().getViewMatrix() * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -1.0f)) ;
+        glm::mat4 rotated_view =    cs557::GetCamera().getViewMatrix()  ;
 
 
 		//-----------------------------------------------------------------------------
