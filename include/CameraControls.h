@@ -129,7 +129,7 @@ namespace cs557
 		glm::vec3       _center;
 		glm::vec3       _eye;
 
-		float			_prev_screen;
+		glm::vec2		_prev_screen_xy;
 
         /*
         0 - no event

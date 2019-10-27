@@ -48,6 +48,8 @@ CameraControls::CameraControls(int window_width, int window_height):
     _current_angle = 0;
 	_mouse_middle_event = 0;
 
+	_prev_screen_xy = glm::vec2(0,0);
+
     // an initial matrix to start with. 
     _vm = glm::lookAt(_eye, _center, glm::vec3(0.0,1.0,0.0) );
 
@@ -89,10 +91,10 @@ glm::vec3 CameraControls::toScreenCoord( double x, double y )
 	float wx = 0.0;
 	float wy = 0.0;
     if( _xAxis )
-		wx =  -(2 * x - _windowWidth ) / _windowWidth;
-    
+		wx = (2 * x - _windowWidth ) / _windowWidth;
+  
     if( _yAxis )
-        wy = -(2 * y - _windowHeight) / _windowHeight;
+        wy = (2 * y - _windowHeight) / _windowHeight;
     
     /* Clamp it to border of the windows */
 	//coord.x = coord.z;
@@ -103,8 +105,9 @@ glm::vec3 CameraControls::toScreenCoord( double x, double y )
     float length_squared = coord.y * coord.y + coord.x * coord.x;
     if( length_squared <= 1.0 )
        coord.z = sqrt( 1.0 - length_squared );
-    else
+    else{
         coord = glm::normalize( coord );
+	}
     
     return coord;
 }
@@ -125,10 +128,10 @@ void CameraControls::cursorCallback( GLFWwindow *window, double x, double y )
     {
         _current_sc= toScreenCoord( x, y ); 
         /* Calculate the angle in radians, and clamp it between 0 and 90 degrees */
-        _current_angle    = acos( std::min(1.0f, glm::dot(_previous_sc, _current_sc) ));
+        _current_angle    = acos( std::min(1.0f, glm::dot( _current_sc, _previous_sc) ));
 
          /* Cross product to get the rotation axis, but it's still in camera coordinate */
-        _camAxis  = glm::cross( _previous_sc, _current_sc );
+        _camAxis  = glm::cross(  _current_sc, _previous_sc );
 		
 		// Check if the angle is larger than 0.001. The matrix becomes undefined otherwise. 
 		if(std::abs(_current_angle) > 0.001){
@@ -142,44 +145,55 @@ void CameraControls::cursorCallback( GLFWwindow *window, double x, double y )
 
 	if (_mouse_move_event == 1) {
 		
-		_prev_screen = y;
+		_prev_screen_xy.y = y;
+		_prev_screen_xy.x = x;
 		_mouse_move_event = 2;
 
 	}else if (_mouse_move_event == 2) {
 		
-		 float distance = y - _prev_screen;
-		 float sign = glm::sign( y - _prev_screen );
+		 float distance = y - _prev_screen_xy.y;
+		 float sign = glm::sign( y - _prev_screen_xy.y );
+
+		 glm::mat4 _vm_inv =glm::inverse(_vm);
 
 		 if(std::abs(distance) > 0.001){
-			_eye = _vm[3] + (glm::vec4(_eye, 0.0f) - glm::vec4(_center, 0.0f)) * sign * 0.01f;
+			 
+			_eye = glm::vec3(_vm[3]) +  glm::vec3( glm::normalize(_vm_inv[1]- _vm[3])) * sign * 0.05f;
 			_vm[3] = glm::vec4(0.0,0.0,0.0, 1.0);
 			_vm = glm::translate(_eye)  * _vm;
+			//_vm[3] = glm::vec4(_eye, 1.0);
 		}
-		 _prev_screen = y;
+		 _prev_screen_xy.y = y;
+		 _prev_screen_xy.x = x;
 	}
 
 
 	if (_mouse_middle_event == 1) {
 		
 		_previous_sc = toScreenCoord( y,x ); 
-		_prev_screen = y;
+		_prev_screen_xy.y = y;
+		_prev_screen_xy.x = x;
 		_mouse_middle_event = 2;
 
 	}
 	else if (_mouse_middle_event == 2) {
 		
-		float sign = glm::sign( x - _prev_screen );
+		float signx = glm::sign( x - _prev_screen_xy.x );
+		float signy = glm::sign( y - _prev_screen_xy.y );
 		_current_sc= toScreenCoord( y,x ); 
-		_camAxis  = glm::normalize( glm::cross( _previous_sc, _current_sc ) );
-		glm::vec3 cam = glm::cross(_eye- _center, _camAxis );
+		
 
-		_eye = _vm[3] + glm::vec4(_camAxis, 0.0f) * sign * 0.01f;
-		_center = _center +  glm::vec3(_camAxis) * sign * 0.01f;
+		glm::mat4 _vm_inv =glm::inverse(_vm);
+		
+		_eye = glm::vec3(_vm[3]) +  glm::normalize( glm::vec3(_vm_inv[0])) * signx * 0.05f -  glm::normalize( glm::vec3(_vm_inv[1])) * signy * 0.05f;
+		_center =  glm::vec3(_vm[3]) + glm::normalize(glm::vec3(_vm[2])) +  glm::normalize( glm::vec3(_vm_inv[0])) * signx * 0.05f -  glm::normalize( glm::vec3(_vm_inv[1])) * signy * 0.05f;
 
-		_vm[3] = glm::vec4(0.0,0.0,0.0, 1.0);
-		_vm = (glm::translate(_eye)  * _vm ) * glm::translate(_center);
+		_vm[3] = glm::vec4(_eye, 1.0);
+		_vm[2] = glm::vec4( glm::normalize(_center - _eye), 0.0);
+
 	
-		  _prev_screen = y;
+		_prev_screen_xy.y = y;
+		_prev_screen_xy.x = x;
 		_previous_sc = _current_sc;
 	}
 
