@@ -76,13 +76,16 @@ endif ()
 #  )
 #endif ()
 
-    
 
 # ----------------------------------------------------------------------------
 # Extract the version from a version file. 
 
 # OpenCV Version 3 support
-find_file(__find_version "version.hpp"  PATHS  "${OpenCV_DIR}/modules/core/include/opencv2/core/"  )
+find_file(__find_version "version.hpp"  PATHS  "${OpenCV_DIR}/modules/core/include/opencv2/core/" )
+
+# just for debug.
+# message( ${__find_version})
+
 if(__find_version)
 	SET(OPENCV_VERSION_FILE "${OpenCV_DIR}/modules/core/include/opencv2/core/version.hpp")
 	file(STRINGS "${OPENCV_VERSION_FILE}" OPENCV_VERSION_PARTS REGEX "#define CV_VERSION_[A-Z]+[ ]+" )
@@ -100,7 +103,7 @@ if(__find_version)
 	set(OpenCV_LIBVERSION "${OPENCV_VERSION_MAJOR}${OPENCV_VERSION_MINOR}${OPENCV_VERSION_PATCH}")
 
 	mark_as_advanced(OpenCV_VERSION)
-	message("[FindOpenCV] - Found OpenCV at " ${OpenCV_DIR} ", Version "  ${OpenCV_VERSION})
+	message(STATUS "[FindOpenCV] - Found OpenCV at " ${OpenCV_DIR} ", Version "  ${OpenCV_VERSION})
 endif()
 unset(__find_version CACHE)
 
@@ -123,7 +126,7 @@ if(__find_version)
 
 
 	mark_as_advanced(OpenCV_VERSION)
-	message("[FindOpenCV] - Found OpenCV at " ${OpenCV_DIR} ", Version "  ${OpenCV_VERSION})
+	message(STATUS "[FindOpenCV] - Found OpenCV at " ${OpenCV_DIR} ", Version "  ${OpenCV_VERSION})
 endif()
 unset(__find_version CACHE)
 
@@ -391,7 +394,7 @@ if(${OPENCV_VERSION_MAJOR} EQUAL "3")
 		endif ()
 
 	else()
-		message("[FindOpenCV] - ERROR - Did not find any OpenCV library")
+		message(STATUS "[FindOpenCV] - ERROR - Did not find any OpenCV library")
 	endif ()
 
 
@@ -538,7 +541,7 @@ if(${OPENCV_VERSION_MAJOR} EQUAL "3")
 
 		endif ()
 	else()
-		message("[FindOpenCV] - ERROR - Did not find any OpenCV DEBUG library")
+		message(STATUS "[FindOpenCV] - ERROR - Did not find any OpenCV DEBUG library")
 		set (OpenCV_FOUND FALSE CACHE PATH "Found opencv")
 	endif ()
 
@@ -1096,12 +1099,12 @@ elseif (${OPENCV_VERSION_MAJOR} EQUAL "2")
 		set (OpenCV_FOUND TRUE CACHE PATH "Found opencv")
 
 	else()
-		message("[FindOpenCV] - ERROR - Did not find any OpenCV library")
+		message(STATUS "[FindOpenCV] - ERROR - Did not find any OpenCV library")
 		set (OpenCV_FOUND FALSE CACHE PATH "Found opencv")
 	endif ()
 
 
 else()
- message("[FindOpenCV] - ERROR Version < 2 is not supported by FindOpenCV.cmake")
+ message(STATUS "[FindOpenCV] - ERROR Version < 2 is not supported by FindOpenCV.cmake")
  set (OpenCV_FOUND FALSE CACHE PATH "Found opencv")
 endif()
