@@ -106,7 +106,8 @@ ENDIF(WIN32)
 # Create an executable
 add_executable(${PROJECT_NAME} ${Test_SRC} )
 
-
+# add project dependency
+add_dependencies(${PROJECT_NAME} GLUtils)
 
 # Add libraries
 target_link_libraries(${PROJECT_NAME}  ${GLEW_LIBS} ${GLEW_LIBS} ${GLFW3_LIBS} ${OPENGL_LIBS} ${OPENGL_LIBRARIES}  )

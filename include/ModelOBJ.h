@@ -17,7 +17,7 @@ rafael@iastate.edu
 
 Last edit:
 Dec 16, 2018, RR
-	- fixed a bug that skipped severa triangles from being rendeered.
+	- fixed a bug that skipped several triangles from being rendeered.
 	- changed the code to process all data. 
 
 Oct 20, 2019, RR
@@ -28,6 +28,7 @@ Oct 20, 2019, RR
 Dec 20, 2019, RR
 	- Added an draw api into the class that comes without a model matrix. This adaptation is necessary for SurfExtract.
 	- Added the namespace cs557 to the FileUtils function to prevent conflicts with other libraries. 
+	- Added function to process more meshes
 */
 #pragma once
 
@@ -104,6 +105,11 @@ namespace cs557
 		int projMatrixLocation;
 
 		glm::mat4 _modelMatrix;
+
+		// indices to render
+		std::vector<int>		start_index;
+		std::vector<int>		length;
+
 	
 		int _N; // number of vertices
 		int _I; // number indices

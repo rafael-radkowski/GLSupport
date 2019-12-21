@@ -96,6 +96,13 @@ void cs557::OBJModel::create(string path_and_filename, int shader_program)
 	objl::Loader loader;
 	loader.LoadFile(found_file);
 
+
+	
+	int current_start_index = 0;
+	start_index.clear();
+	length.clear();
+
+
 	int size = loader.LoadedMeshes.size();
 
 	for(int i=0; i<size; i++)
@@ -111,10 +118,20 @@ void cs557::OBJModel::create(string path_and_filename, int shader_program)
 		}
 		
 
+		start_index.push_back(current_start_index);
+		length.push_back(curMesh.Indices.size());
+
 		for (int j = 0; j < curMesh.Indices.size(); j++)
 		{
-			indices.push_back(curMesh.Indices[j]);
+			indices.push_back(curMesh.Indices[j] + current_start_index); 
+			//  + current_start_index is requires since the obj loader objl::Loader loader
+			// starts a new index count for each mesh instead of keeping the original indices. 
+			// This code puts all vertices and indices into one vertex buffer and index buffer. 
+			// So the + current_start_index implements the offset jump. 
 		}
+
+		current_start_index += curMesh.Indices.size();
+
 	}
 	_I = indices.size();
 	_N = points.size();
@@ -139,26 +156,27 @@ void cs557::OBJModel::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm
 	glUseProgram(program);
 
 
-
 	// this changes the camera location
 	glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, &viewMatrix[0][0]); // send the view matrix to our shader
 	glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, &modelMatrix[0][0]); // send the model matrix to our shader
 	glUniformMatrix4fv(projMatrixLocation, 1, GL_FALSE, &projectionMatrix[0][0]); // send the projection matrix to our shader
 
 
-	 // Bind the buffer and switch it to an active buffer
+	// Bind the buffer and switch it to an active buffer
 	glBindVertexArray(vaoID[0]);
 
-	// Draw the triangles
- 	glDrawElements(GL_TRIANGLES, _I, GL_UNSIGNED_INT, 0);
-	
+	for (int i = 0; i < start_index.size(); i++) {
+
+		// Draw the triangles
+		glDrawElements(GL_TRIANGLES, length[i], GL_UNSIGNED_INT, (GLint*)(sizeof(int)*start_index[i]));
+	}
+	//glDrawElements(GL_TRIANGLES, _I, GL_UNSIGNED_INT, 0);
 
 	// Unbind our Vertex Array Object
 	glBindVertexArray(0);
 
 	// Unbind the shader program
 	glUseProgram(0);
-
 
 }
 
