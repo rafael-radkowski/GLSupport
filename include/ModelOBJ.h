@@ -24,6 +24,10 @@ Oct 20, 2019, RR
 	- Removed some legacy code. 
 	- Test whether points have been loaded before rendering. 
 	- Added the class FileUtils to the code to check whether the model is at its indicated location. 
+
+Dec 20, 2019, RR
+	- Added an draw api into the class that comes without a model matrix. This adaptation is necessary for SurfExtract.
+	- Added the namespace cs557 to the FileUtils function to prevent conflicts with other libraries. 
 */
 #pragma once
 
@@ -72,13 +76,19 @@ namespace cs557
 		@param modelMatrix - a model matrix object.
 		*/
 		void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm::mat4 modelMatrix);
-
+		void draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
 
 		/*
 		Return the shader program
 		@return - int containing the shader program
 		*/
 		int getProgram(void){return program;}
+		
+				/*
+		Set the object's model matrix
+		@param m - 4x4 model matrix
+		*/
+		void setModelMatrix(glm::mat4 m) {_modelMatrix = m; }
 
 	private:
 
@@ -93,6 +103,7 @@ namespace cs557
 		int modelMatrixLocation;
 		int projMatrixLocation;
 
+		glm::mat4 _modelMatrix;
 	
 		int _N; // number of vertices
 		int _I; // number indices

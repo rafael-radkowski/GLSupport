@@ -90,7 +90,7 @@ void cs557::OBJModel::create(string path_and_filename, int shader_program)
 
 	// Check for the file.
 	string found_file;
-	FileUtils::Search(path_and_filename, found_file);
+	cs557::FileUtils::Search(path_and_filename, found_file);
 
 	// Load the geometry from file. 
 	objl::Loader loader;
@@ -163,4 +163,12 @@ void cs557::OBJModel::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm
 }
 
 
-
+/*
+Draw the coordinate system
+@param viewMatrix - a view matrix object
+@param modelMatrix - a model matrix object.
+*/
+void cs557::OBJModel::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
+{
+	draw(projectionMatrix,  viewMatrix,  _modelMatrix );
+}
