@@ -15,3 +15,5 @@ test/gl_test_light/GLTest01.dir/
 *.user
 *.pdb
 bin/
+*.un~
+test/gl_test_shadow_map/GLTest02.dir/

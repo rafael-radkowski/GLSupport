@@ -7,13 +7,14 @@
  rafael@iastate.edu
  Dec. 9, 2016
 
+ -------------------------------------------------------------------------------
  Last edit:
  Dec. 12, 2017:
  - Added a description
  Jan. 19, 2018:
  - Added the function CreateRenderToTexture32Bit() to render to 32 bit targets.
  - Changed the depth target in CreateRenderToTexture from GL_DEPTH_COMPONENT23 to GL_DEPTH_COMPONENT32
-***************************/
+ */
 #ifndef RENDERTOTEXTURE
 #define RENDERTOTEXTURE
 
