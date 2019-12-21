@@ -19,7 +19,7 @@ Check whether or not a file exists at the given path.
 bool FileUtils::Exists(string path_and_file)
 {
  #ifdef _WIN32
-	#if defined(_MSC_VER) && (_MSC_VER >= 1916)	
+	#if defined(_MSC_VER) && (_MSC_VER >= 1916)	&& (_MSVC_LANG  == 201703L)
 		if (std::filesystem::exists(path_and_file)) {
 	#else
 		if (std::experimental::filesystem::exists(path_and_file)) {

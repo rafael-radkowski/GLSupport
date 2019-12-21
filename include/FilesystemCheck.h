@@ -27,7 +27,7 @@ Oct 21, 2019, RR:
 
 
 #ifdef _WIN32
-	#if defined(_MSC_VER) && (_MSC_VER >= 1916)	
+	#if defined(_MSC_VER) && (_MSC_VER >= 1916)	 && (_MSVC_LANG  == 201703L)
 		#include <filesystem>
 	#else
 		#define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
