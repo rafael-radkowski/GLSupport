@@ -45,7 +45,7 @@ set(CMAKE_DEBUG_POSTFIX d)
 
 
 # Create an executable
-add_library(${PROJECT_NAME}  ${GLUtils_SRC} ${GLUtils_INC} )
+add_library(${PROJECT_NAME} STATIC ${GLUtils_SRC} ${GLUtils_INC} )
 
 
 
