@@ -20,7 +20,7 @@ Oct 19, 2019, RR
   angle is < 0.001.
 */
 
-
+#pragma once
 #ifndef TRACKBALLCONTROLS
 #define TRACKBALLCONTROLS
 
@@ -43,8 +43,6 @@ Oct 19, 2019, RR
 
 
 #include "ControlsBase.h"
-
-using namespace std;
 
 
 namespace cs557

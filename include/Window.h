@@ -34,10 +34,11 @@ Edits:
 // glfw includes
 #include <GLFW/glfw3.h>
 
-
 // locals
 #include "TrackballControls.h"		// a trackball controller
 #include "CameraControls.h"
+
+
 
 using namespace std;
 

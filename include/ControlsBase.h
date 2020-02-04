@@ -18,7 +18,6 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 
-using namespace std;
 
 /*
 Abnstract base class for all control classes. 

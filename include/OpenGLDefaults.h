@@ -1,5 +1,20 @@
 #pragma once
+/*
+Class OpenGLDefaults
 
+The class provides two apis to read the opengl version that the computer supports
+
+Rafael Radkowski
+Iowa State University
+rafael@iastate.edu
+MIT License
+-------------------------------------------------------
+Last edits:
+
+Dec 25, 2019, RR:
+- Removed std namespace to avoid byte conflicts with the Windows.h lib. 
+
+*/
 
 // stl include
 #include <iostream>
@@ -16,11 +31,6 @@
 
 // glfw includes
 #include <GLFW/glfw3.h>
-
-
-
-
-using namespace std;
 
 
 namespace cs557

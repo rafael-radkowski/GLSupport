@@ -32,7 +32,6 @@
 #include "ModelObj.h"
 #include "ModelSphere.h"
 
-
 using namespace std;
 using namespace cs557;
 //------------------------------------------------------------

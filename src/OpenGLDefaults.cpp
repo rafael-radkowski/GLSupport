@@ -36,17 +36,17 @@ namespace cs557
 
 		// Initialize GLEW
 		if (glewInit() != GLEW_OK) {
-			cout << "Failed to initialize GLEW\n" << endl;
+			std::cout << "Failed to initialize GLEW\n" << std::endl;
 			system("pause");
 			return false;
 		}
 
-		cout << "OpenGL version supported by this platform " << glGetString(GL_VERSION) << endl;
+		std::cout << "OpenGL version supported by this platform " << glGetString(GL_VERSION) << std::endl;
 
 
 		// Check the GLSL version
 		const char *verstr = (const char *)glGetString(GL_SHADING_LANGUAGE_VERSION);
-		cout << "GLSL version supported by this platform " << string(verstr) << endl;
+		std::cout << "GLSL version supported by this platform " << std::string(verstr) << std::endl;
 		#ifdef _WIN32
 			sscanf_s(verstr, "%d.%d", &glsl_major, &glsl_minor);
 		#else
