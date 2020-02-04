@@ -76,7 +76,6 @@ file(GLOB Test_SRC
 	main.cpp
 )
 
-source_group(src ${Test_SRC})
 
 add_compile_definitions(_WITH_CAMERA)
 add_compile_definitions(GLM_ENABLE_EXPERIMENTAL)
@@ -104,14 +103,8 @@ ELSE(WIN32)
 ENDIF(WIN32)
 
 
-
 # Create an executable
 add_executable(${PROJECT_NAME} ${Test_SRC} )
-
-# move the project into a subfolder
-set_target_properties (${PROJECT_NAME}  PROPERTIES
-    FOLDER Examples
-)
 
 # add project dependency
 add_dependencies(${PROJECT_NAME} GLUtils)
