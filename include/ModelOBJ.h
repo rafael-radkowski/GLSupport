@@ -29,8 +29,13 @@ Dec 20, 2019, RR
 	- Added an draw api into the class that comes without a model matrix. This adaptation is necessary for SurfExtract.
 	- Added the namespace cs557 to the FileUtils function to prevent conflicts with other libraries. 
 	- Added function to process more meshes
+
+Feb 16, 2020, RR
+	- Added material to the laoder. 
+	- Added a texture loader (texture is not processed yet).
 */
 #pragma once
+#include "OBJLoader.h"
 
 // stl include
 #include <iostream>
@@ -52,7 +57,9 @@ Dec 20, 2019, RR
 #include "VertexBuffers.h"			// create vertex buffer object
 #include "ShaderProgram.h"			// create a shader program
 #include "FileUtils.h"				// checks whether the model file is at its given location.
-
+#include "CommonTypes.h"			// material
+#include "Texture2D.h"
+#include "TextureLoader.h"
 
 using namespace std;
 
@@ -93,6 +100,16 @@ namespace cs557
 
 	private:
 
+		/*
+		Process the diffuse, ambient, and specular texture of the object. 
+		The function loads the textures from a file (using OpenCV), creates the texture object, 
+		and copies the textures to the gpu.
+		@param program - the shader program for this object. 
+		@param curMesh - the current mesh that this instance creates.
+		@param path - the path and file from which this object gets loaded. The function extracts the path.
+		*/
+		void processTextures(int& program, objl::Mesh& curMesh, string path);
+
 
 		int vaoID[1]; // Our Vertex Array Object
 		int vboID[2]; // Our Vertex Buffer Object
@@ -110,6 +127,8 @@ namespace cs557
 		std::vector<int>		start_index;
 		std::vector<int>		length;
 
+		std::vector<cs557::Material>		materials;//material per mesh
+		std::vector< cs557::TexMaterial>	textures;// textures per mesh
 	
 		int _N; // number of vertices
 		int _I; // number indices

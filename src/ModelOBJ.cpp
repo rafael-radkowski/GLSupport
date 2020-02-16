@@ -110,6 +110,24 @@ void cs557::OBJModel::create(string path_and_filename, int shader_program)
 
 		objl::Mesh curMesh = loader.LoadedMeshes[i];
 
+
+		// process all materials
+		cs557::Material mat;
+		mat.ambient_mat = glm::vec3(curMesh.MeshMaterial.Ka.X, curMesh.MeshMaterial.Ka.Y, curMesh.MeshMaterial.Ka.Z) ;
+		mat.diffuse_mat = glm::vec3(curMesh.MeshMaterial.Kd.X, curMesh.MeshMaterial.Kd.Y, curMesh.MeshMaterial.Kd.Z) ;
+		mat.specular_mat = glm::vec3(curMesh.MeshMaterial.Ks.X, curMesh.MeshMaterial.Ks.Y, curMesh.MeshMaterial.Ks.Z) ;
+		mat.specular_s = curMesh.MeshMaterial.Ns;
+		mat.specular_int = 0.2;
+		mat.ambient_int = 0.2;
+		mat.diffuse_int = 0.8;
+		mat.with_error_check = false;
+
+		materials.push_back(mat);
+
+		// process all textures
+		processTextures(program, curMesh, path_and_filename);
+	
+
 		for (int j = 0; j < curMesh.Vertices.size(); j++)
 		{
 			points.push_back(make_pair( glm::vec3(curMesh.Vertices[j].Position.X, curMesh.Vertices[j].Position.Y, curMesh.Vertices[j].Position.Z),
@@ -166,6 +184,8 @@ void cs557::OBJModel::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix, glm
 	glBindVertexArray(vaoID[0]);
 
 	for (int i = 0; i < start_index.size(); i++) {
+		materials[i].apply(program);
+		glUseProgram(program);
 
 		// Draw the triangles
 		glDrawElements(GL_TRIANGLES, length[i], GL_UNSIGNED_INT, (GLint*)(sizeof(int)*start_index[i]));
@@ -189,4 +209,134 @@ Draw the coordinate system
 void cs557::OBJModel::draw(glm::mat4 projectionMatrix, glm::mat4 viewMatrix)
 {
 	draw(projectionMatrix,  viewMatrix,  _modelMatrix );
+}
+
+
+
+
+void cs557::OBJModel::processTextures(int& program, objl::Mesh& curMesh, string path)
+{
+	// Extract the current path. 
+	int idx = path.find_last_of("/");
+	string curr_path = "";
+	if (idx != 0) {
+		curr_path = path.substr(0, idx+1);
+	}
+
+	cs557::TexMaterial tex;
+
+	//-------------------------------------------------------------------------------------------------------
+	// diffuse texture
+	string tex_Kd = curMesh.MeshMaterial.map_Kd;
+	
+	if (tex_Kd.length() > 0) {
+		string tex_path = curr_path;
+		tex_path.append(tex_Kd);
+
+		// Load the texture
+		TextureLoader::Load(tex_path, &tex.diff.map, &tex.diff.width, &tex.diff.height, &tex.diff.channels);
+
+		// create the gl texture
+		glUseProgram(program);
+		cs557::CreateTexture2D(tex.diff.width, tex.diff.height, tex.diff.channels, tex.diff.map, &tex.diff.tex_id);
+
+		// Activate the texture unit and bind the texture. 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex.diff.tex_id);
+
+		// Fetch the texture location and set the parameter to 0.
+		// Note that 0 is the number of the texture unit GL_TEXTURE0.
+		tex.diff.tex_loc = glGetUniformLocation(program, "tex[0].tex_kd");
+		glUniform1i(tex.diff.tex_loc, 0);
+
+		// set the texture to active. 
+		int u = glGetUniformLocation(program, "tex[0].with_tex_kd");
+		glUniform1i(u, 1);
+
+		glUseProgram(0);
+
+		tex.num_textures++;
+	}
+
+	//-------------------------------------------------------------------------------------------------------
+	// ambient texture
+	string tex_Ka = curMesh.MeshMaterial.map_Ka;
+
+	if (tex_Ka.length() > 0) {
+		string tex_path = curr_path;
+		tex_path.append(tex_Ka);
+
+		// Load the texture
+		TextureLoader::Load(tex_path, &tex.ambi.map, &tex.ambi.width, &tex.ambi.height, &tex.ambi.channels);
+
+		// create the gl texture
+		glUseProgram(program);
+		cs557::CreateTexture2D(tex.ambi.width, tex.ambi.height, tex.ambi.channels, tex.ambi.map, &tex.ambi.tex_id);
+
+		// Activate the texture unit and bind the texture. 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex.ambi.tex_id);
+
+		// Fetch the texture location and set the parameter to 0.
+		// Note that 0 is the number of the texture unit GL_TEXTURE0.
+		tex.ambi.tex_loc = glGetUniformLocation(program, "tex[0].tex_ka");
+		glUniform1i(tex.ambi.tex_loc, 0);
+
+		// set the texture to active. 
+		int u = glGetUniformLocation(program, "tex[0].with_tex_ka");
+		glUniform1i(u, 1);
+
+		glUseProgram(0);
+
+		tex.num_textures++;
+	}
+
+
+	//-------------------------------------------------------------------------------------------------------
+	// specular texture
+	string tex_Ks = curMesh.MeshMaterial.map_Ks;
+
+	if (tex_Ks.length() > 0) {
+		string tex_path = curr_path;
+		tex_path.append(tex_Ks);
+
+		// Load the texture
+		TextureLoader::Load(tex_path, &tex.spec.map, &tex.spec.width, &tex.spec.height, &tex.spec.channels);
+
+		// create the gl texture
+		glUseProgram(program);
+		cs557::CreateTexture2D(tex.spec.width, tex.spec.height, tex.spec.channels, tex.spec.map, &tex.spec.tex_id);
+
+		// Activate the texture unit and bind the texture. 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, tex.spec.tex_id);
+
+		// Fetch the texture location and set the parameter to 0.
+		// Note that 0 is the number of the texture unit GL_TEXTURE0.
+		tex.spec.tex_loc = glGetUniformLocation(program, "tex[0].tex_ks");
+		glUniform1i(tex.spec.tex_loc, 0);
+
+		// set the texture to active. 
+		int u = glGetUniformLocation(program, "tex[0].with_tex_ks");
+		glUniform1i(u, 1);
+
+		glUseProgram(0);
+
+		tex.num_textures++;
+	}
+
+
+	//----------------------------------------------------
+	// set the texture mode
+	glUseProgram(program);
+	int loc = glGetUniformLocation(program, "tex[0].tex_mode");
+	if (tex.num_textures > 0) 
+		glUniform1i(loc, tex.tex_mode);
+	else
+		glUniform1i(loc, 0);
+	glUseProgram(0);
+
+	textures.push_back(tex);
+
+
 }
