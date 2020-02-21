@@ -18,6 +18,9 @@ Oct 19, 2019, RR
 - Added a angle-check to the cursorCallback. The viewmatrix becomes undefined if
   the angle is < 0.001. All objects would disappear. To prevent that, I now check whether the
   angle is < 0.001.
+
+Feb 21, 2020, RR
+- Fixed a camera bug that resulted in inccorect camera pans. 
 */
 
 #pragma once
