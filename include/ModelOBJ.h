@@ -33,6 +33,9 @@ Dec 20, 2019, RR
 Feb 16, 2020, RR
 	- Added material to the laoder. 
 	- Added a texture loader (texture is not processed yet).
+
+May 8, 2020, RR
+	- Set the access level from private to protected to allow the ModelBRDF class to inherit members. 
 */
 #pragma once
 #include "OBJLoader.h"
@@ -98,7 +101,7 @@ namespace cs557
 		*/
 		void setModelMatrix(glm::mat4 m) {_modelMatrix = m; }
 
-	private:
+	protected:
 
 		/*
 		Process the diffuse, ambient, and specular texture of the object. 

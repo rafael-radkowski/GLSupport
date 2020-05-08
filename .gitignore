@@ -17,3 +17,4 @@ test/gl_test_light/GLTest01.dir/
 bin/
 *.un~
 test/gl_test_shadow_map/GLTest02.dir/
+test/gl_test_brdf/GLTest03.dir/
