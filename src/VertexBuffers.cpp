@@ -22,7 +22,7 @@ bool cs557::CreateVertexObjects33(int* vaoID, int* vboID, float* vertices, float
 	glGenVertexArrays(1, (GLuint*)vaoID); // Create our Vertex Array Object
 	glBindVertexArray(*vaoID); // Bind our Vertex Array Object so we can use it
 
-	if (vaoID[1] == -1){
+	if (vaoID[0] == -1){
 		std::cout << "[ERROR] - Vertex array object was not generated." << std::endl;
 		return false;
 	}
@@ -86,7 +86,7 @@ bool cs557::CreateVertexObjectsIndexed33( int* vaoID, int* vboID, int* iboID, fl
 	glGenVertexArrays(1, (GLuint*)vaoID); // Create our Vertex Array Object
 	glBindVertexArray(*vaoID); // Bind our Vertex Array Object so we can use it
 
-	if (vaoID[1] == -1){
+	if (vaoID[0] == -1){
 		std::cout << "[ERROR] - Vertex array object was not generated." << std::endl;
 		return false;
 	}
@@ -230,7 +230,7 @@ bool cs557::CreateVertexObjects53(int* vaoID, int* vboID, float* vertices_textur
 	glGenVertexArrays(1, (GLuint*)vaoID); // Create our Vertex Array Object
 	glBindVertexArray(*vaoID); // Bind our Vertex Array Object so we can use it
 
-	if (vaoID[1] == -1){
+	if (vaoID[0] == -1){
 		std::cout << "[ERROR] - Vertex array object was not generated." << std::endl;
 		return false;
 	}
