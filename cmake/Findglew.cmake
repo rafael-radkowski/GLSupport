@@ -119,6 +119,10 @@ if(GLEW_DIR)
 	unset(__find_glew_lib CACHE)
 	
 	set(GLEW_LIBS ${GLEW_LIBS_LIST} CACHE STRING "glew libs" FORCE)
+else()
+        # Fall-through in case library is just available
+	set(GLEW_LIBS GLEW CACHE STRING "glew libs" FORCE)
+	
 endif ()
 
 
