@@ -59,7 +59,7 @@ Oct 26, 2019, RR
 // Geometry
 #include "ModelCoordinateSystem.h"
 #include "ModelPlane.h"
-#include "ModelObj.h"
+#include "ModelOBJ.h"
 #include "ModelSphere.h"
 
 

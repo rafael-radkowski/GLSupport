@@ -113,5 +113,5 @@ add_dependencies(${PROJECT_NAME} GLUtils)
 
 # Add libraries
 target_link_libraries(${PROJECT_NAME}  ${GLEW_LIBS} ${GLEW_LIBS} ${GLFW3_LIBS} ${OPENGL_LIBS} ${OPENGL_LIBRARIES}  )
-target_link_libraries(${PROJECT_NAME} debug  GLUtilsd.lib )
-target_link_libraries(${PROJECT_NAME} optimized  GLUtils.lib )
+target_link_libraries(${PROJECT_NAME} debug  GLUtilsd )
+target_link_libraries(${PROJECT_NAME} optimized  GLUtils )

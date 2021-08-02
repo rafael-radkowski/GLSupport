@@ -158,7 +158,7 @@ void cs557::ModelBSMorphing::create(string path_and_filename_1, string path_and_
 		glBindVertexArray(*vaoID); // Bind our Vertex Array Object so we can use it
 
 
-		if (vaoID[1] == -1){
+		if (vaoID[0] == -1){
 			std::cout << "[ERROR] - Vertex array object was not generated." << std::endl;
 		}
 

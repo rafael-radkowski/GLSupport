@@ -59,16 +59,16 @@ endif()
 
 # 2. If environment variable is nto defined, search at typical locations
 if (NOT _glew_DIR)
-	FIND_PATH(GLEW_DIR "gl/glew.h"
+	FIND_PATH(GLEW_DIR "GL/glew.h"
 		PATHS ${_glew_SEARCH_DIRS} )
 endif()
 unset(_glew_DIR CACHE)
 
 
 # 3. Find the include directory
-find_file(__find_glew "gl/glew.h" ${GLEW_DIR}/include)
+find_file(__find_glew "GL/glew.h" ${GLEW_DIR}/include)
 if(__find_glew)
-	find_path(GLEW_INCLUDE_DIR "gl/glew.h"
+	find_path(GLEW_INCLUDE_DIR "GL/glew.h"
 	PATHS ${GLEW_DIR}/include)
 	#message(${GLEW_INCLUDE_DIR})
 	
@@ -88,7 +88,7 @@ set( _glew_LIB_SEARCH_DIRS
   "${GLEW_DIR}/lib/Debug" 
   )
   
-if(GLEW_DIR)
+if(GLEW_DIR AND WIN32)
 	set(GLEW_LIBS_LIST )
 
 	find_file(__find_glew_lib "glew32.lib" PATHS ${_glew_LIB_SEARCH_DIRS})
@@ -119,6 +119,10 @@ if(GLEW_DIR)
 	unset(__find_glew_lib CACHE)
 	
 	set(GLEW_LIBS ${GLEW_LIBS_LIST} CACHE STRING "glew libs" FORCE)
+else()
+        # Fall-through in case library is just available
+	set(GLEW_LIBS GLEW CACHE STRING "glew libs" FORCE)
+	
 endif ()
 
 

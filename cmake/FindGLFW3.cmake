@@ -53,16 +53,16 @@ endif()
 
 # 2. If environment variable is nto defined, search at typical locations
 if (NOT _glfw_DIR)
-	FIND_PATH(GLFW3_DIR "glfw/glfw3.h"
+	FIND_PATH(GLFW3_DIR "GLFW/glfw3.h"
 		PATHS ${_glfw3_SEARCH_DIRS} )
 endif()
 unset(_glfw_DIR CACHE)
 
 
 # 3. Find the include directory
-find_file(__find_glfw "glfw/glfw3.h" ${GLFW3_DIR}/include)
+find_file(__find_glfw "GLFW/glfw3.h" ${GLFW3_DIR}/include)
 if(__find_glfw)
-	find_path(GLFW3_INCLUDE_DIR "glfw/glfw3.h"
+	find_path(GLFW3_INCLUDE_DIR "GLFW/glfw3.h"
 	PATHS ${GLFW3_DIR}/include)
 	
 	if(NOT GLFW3_INCLUDE_DIR)
@@ -90,6 +90,7 @@ set( _glfw_LIB_SEARCH_DIRS
   )
   
 if(GLFW3_DIR)
+  if (WIN32)
 	set(GLFW3_LIBS_LIST )
 
 	find_file(__find_glfw_lib "glfw3.lib" PATHS ${_glfw_LIB_SEARCH_DIRS})
@@ -118,8 +119,11 @@ if(GLFW3_DIR)
 		list( APPEND GLFW3_LIBS_LIST ${GLFW3_LIBRARY_DEBUG})
 	endif()
 	unset(__find_glfw_lib CACHE)
-	
-	set(GLFW3_LIBS ${GLFW3_LIBS_LIST} CACHE STRING "Glfw3 libs" FORCE)
+
+  else(WIN32)
+    set(GLFW3_LIBS_LIST glfw)
+  endif()
+  set(GLFW3_LIBS ${GLFW3_LIBS_LIST} CACHE STRING "Glfw3 libs" FORCE)
 endif (GLFW3_DIR)
 
 
